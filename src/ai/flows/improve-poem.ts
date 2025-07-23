@@ -12,13 +12,13 @@ import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 
 const ImprovePoemInputSchema = z.object({
-  initialPoem: z.string().describe('The initial poem to improve.'),
-  feedback: z.string().describe('User feedback on the initial poem.'),
+  initialPoem: z.string().describe('O poema inicial a ser melhorado.'),
+  feedback: z.string().describe('Feedback do usuário sobre o poema inicial.'),
 });
 export type ImprovePoemInput = z.infer<typeof ImprovePoemInputSchema>;
 
 const ImprovePoemOutputSchema = z.object({
-  improvedPoem: z.string().describe('The improved poem based on user feedback.'),
+  improvedPoem: z.string().describe('O poema melhorado com base no feedback do usuário, em Português do Brasil.'),
 });
 export type ImprovePoemOutput = z.infer<typeof ImprovePoemOutputSchema>;
 
@@ -30,16 +30,18 @@ const prompt = ai.definePrompt({
   name: 'improvePoemPrompt',
   input: {schema: ImprovePoemInputSchema},
   output: {schema: ImprovePoemOutputSchema},
-  prompt: `You are a world-class poet, skilled at refining existing poems based on feedback.
+  prompt: `Você é um poeta de classe mundial, especialista em refinar poemas existentes com base em feedback.
 
-  Here is the initial poem:
+  O poema a ser melhorado DEVE ser em Português do Brasil.
+
+  Aqui está o poema inicial:
   {{initialPoem}}
 
-  Here is the feedback from the user:
+  Aqui está o feedback do usuário:
   {{feedback}}
 
-  Please improve the poem based on the feedback, maintaining the original style and tone as much as possible.
-  Return only the improved poem.
+  Por favor, melhore o poema com base no feedback, mantendo o estilo e o tom originais o máximo possível.
+  Retorne apenas o poema melhorado.
   `,
 });
 

@@ -103,14 +103,14 @@ export default function Home() {
           setPoem(result.poem);
           setEditedPoem(result.poem);
         } else {
-          throw new Error("The generated poem was empty.");
+          throw new Error("O poema gerado estava vazio.");
         }
       } catch (error) {
-        console.error("Poem generation failed:", error);
+        console.error("Falha na geração do poema:", error);
         toast({
           variant: "destructive",
-          title: "Error",
-          description: "Could not generate a poem. Please try another image.",
+          title: "Erro",
+          description: "Não foi possível gerar um poema. Por favor, tente outra imagem.",
         });
       } finally {
         setIsGenerating(false);
@@ -125,8 +125,8 @@ export default function Home() {
       if (!file.type.startsWith("image/")) {
         toast({
           variant: "destructive",
-          title: "Invalid File",
-          description: "Please upload an image file.",
+          title: "Arquivo Inválido",
+          description: "Por favor, envie um arquivo de imagem.",
         });
         return;
       }
@@ -164,39 +164,39 @@ export default function Home() {
     setIsProcessing(true);
     try {
       const blob = await createCombinedImage(imageUrl, poem, 'Literata', '#FFFFFF', 'rgba(54, 51, 51, 0.7)');
-      if (!blob) throw new Error("Failed to create image.");
+      if (!blob) throw new Error("Falha ao criar a imagem.");
 
       if (action === "download") {
         const url = URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
-        a.download = "verse-vision.png";
+        a.download = "verso-visao.png";
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
       } else if (action === "share") {
-        if (navigator.share && navigator.canShare({ files: [new File([blob], 'verse-vision.png', { type: 'image/png' })] })) {
-          const file = new File([blob], "verse-vision.png", { type: "image/png" });
+        if (navigator.share && navigator.canShare({ files: [new File([blob], 'verso-visao.png', { type: 'image/png' })] })) {
+          const file = new File([blob], "verso-visao.png", { type: "image/png" });
           await navigator.share({
-            title: "VerseVision Creation",
-            text: `A poem inspired by my photo:\n\n${poem}`,
+            title: "Criação VersoVisão",
+            text: `Um poema inspirado na minha foto:\n\n${poem}`,
             files: [file],
           });
         } else {
           toast({
             variant: "destructive",
-            title: "Sharing not supported",
-            description: "Your browser does not support sharing files.",
+            title: "Compartilhamento não suportado",
+            description: "Seu navegador não suporta o compartilhamento de arquivos.",
           });
         }
       }
     } catch (error) {
-      console.error(`${action} failed:`, error);
+      console.error(`${action} falhou:`, error);
       toast({
         variant: "destructive",
-        title: "Error",
-        description: `Could not ${action} your creation.`,
+        title: "Erro",
+        description: `Não foi possível ${action === 'download' ? 'baixar' : 'compartilhar'} sua criação.`,
       });
     } finally {
       setIsProcessing(false);
@@ -209,7 +209,7 @@ export default function Home() {
         <div className="max-w-6xl mx-auto flex items-center gap-3">
           <Feather className="text-primary w-8 h-8" />
           <h1 className="text-3xl font-bold font-headline tracking-tight">
-            Verse<span className="text-primary">Vision</span>
+            Verso<span className="text-primary">Visão</span>
           </h1>
         </div>
       </header>
@@ -231,23 +231,23 @@ export default function Home() {
                   onKeyDown={(e) => e.key === 'Enter' && triggerFileUpload()}
                   tabIndex={0}
                   role="button"
-                  aria-label="Upload a photo"
+                  aria-label="Envie uma foto"
                 >
                   <Upload className="w-16 h-16 text-muted-foreground mb-4" />
-                  <h3 className="text-xl font-semibold mb-2">Upload a photo</h3>
+                  <h3 className="text-xl font-semibold mb-2">Envie uma foto</h3>
                   <p className="text-muted-foreground">
-                    Let our AI craft a poem from your image.
+                    Deixe nossa IA criar um poema a partir da sua imagem.
                   </p>
                 </div>
               ) : (
                 <div className="relative aspect-square w-full">
                   <Image
                     src={imageUrl}
-                    alt="User upload"
+                    alt="Envio do usuário"
                     fill
                     sizes="(max-width: 768px) 100vw, 50vw"
                     className="object-cover"
-                    data-ai-hint="user image"
+                    data-ai-hint="imagem do usuário"
                   />
                 </div>
               )}
@@ -255,7 +255,7 @@ export default function Home() {
             {imageUrl && (
               <CardFooter className="p-4 bg-muted/50">
                 <Button variant="outline" onClick={triggerFileUpload} className="w-full">
-                  Change Photo
+                  Mudar Foto
                 </Button>
               </CardFooter>
             )}
@@ -263,9 +263,9 @@ export default function Home() {
 
           <Card className="shadow-lg flex flex-col transition-all duration-300">
             <CardHeader>
-              <CardTitle className="text-2xl font-headline">Your Poem</CardTitle>
+              <CardTitle className="text-2xl font-headline">Seu Poema</CardTitle>
               <CardDescription>
-                {isGenerating ? "Our AI is crafting your masterpiece..." : "An AI-generated poem inspired by your photo."}
+                {isGenerating ? "Nossa IA está criando sua obra-prima..." : "Um poema gerado por IA inspirado na sua foto."}
               </CardDescription>
             </CardHeader>
             <CardContent className="flex-1">
@@ -282,7 +282,7 @@ export default function Home() {
                     value={editedPoem}
                     onChange={(e) => setEditedPoem(e.target.value)}
                     className="h-full min-h-[200px] text-base"
-                    aria-label="Edit your poem"
+                    aria-label="Edite seu poema"
                   />
                 ) : (
                   <div className="text-lg whitespace-pre-wrap font-serif italic text-foreground/90 p-4 bg-secondary rounded-md min-h-[200px]">
@@ -291,7 +291,7 @@ export default function Home() {
                 )
               ) : (
                 <div className="flex items-center justify-center h-full min-h-[200px] text-muted-foreground">
-                  <p>Your poem will appear here.</p>
+                  <p>Seu poema aparecerá aqui.</p>
                 </div>
               )}
             </CardContent>
@@ -300,30 +300,30 @@ export default function Home() {
                 {isEditing ? (
                   <>
                     <Button variant="ghost" onClick={handleCancelEdit}>
-                      <X className="mr-2" /> Cancel
+                      <X className="mr-2" /> Cancelar
                     </Button>
                     <Button onClick={handleSaveEdit}>
-                      <Save className="mr-2" /> Save Changes
+                      <Save className="mr-2" /> Salvar Alterações
                     </Button>
                   </>
                 ) : (
                   <>
                     <Button variant="secondary" onClick={handleEdit}>
-                      <Edit className="mr-2" /> Edit
+                      <Edit className="mr-2" /> Editar
                     </Button>
                     <Button
                       onClick={() => handleAction("share")}
                       disabled={isProcessing}
                     >
                       {isProcessing ? <LoaderCircle className="animate-spin mr-2"/> : <Share2 className="mr-2" />}
-                      Share
+                      Compartilhar
                     </Button>
                     <Button
                       onClick={() => handleAction("download")}
                       disabled={isProcessing}
                     >
                       {isProcessing ? <LoaderCircle className="animate-spin mr-2"/> : <Download className="mr-2" />}
-                      Download
+                      Baixar
                     </Button>
                   </>
                 )}

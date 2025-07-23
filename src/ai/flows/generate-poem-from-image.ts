@@ -14,13 +14,13 @@ const GeneratePoemFromImageInputSchema = z.object({
   photoDataUri: z
     .string()
     .describe(
-      'A photo to generate a poem from, as a data URI that must include a MIME type and use Base64 encoding. Expected format: \'data:<mimetype>;base64,<encoded_data>\'.'
+      "Uma foto para gerar um poema, como um data URI que deve incluir um tipo MIME e usar codificação Base64. Formato esperado: 'data:<mimetype>;base64,<dados_codificados>'."
     ),
 });
 export type GeneratePoemFromImageInput = z.infer<typeof GeneratePoemFromImageInputSchema>;
 
 const GeneratePoemFromImageOutputSchema = z.object({
-  poem: z.string().describe('The generated poem based on the image.'),
+  poem: z.string().describe('O poema gerado com base na imagem, em Português do Brasil.'),
 });
 export type GeneratePoemFromImageOutput = z.infer<typeof GeneratePoemFromImageOutputSchema>;
 
@@ -34,11 +34,13 @@ const prompt = ai.definePrompt({
   name: 'generatePoemFromImagePrompt',
   input: {schema: GeneratePoemFromImageInputSchema},
   output: {schema: GeneratePoemFromImageOutputSchema},
-  prompt: `You are a poet laureate, skilled at crafting evocative poems inspired by visual imagery.
+  prompt: `Você é um poeta laureado, especialista em criar poemas evocativos em Português do Brasil inspirados em imagens.
 
-  Given the following image, write a short poem (approximately 4-8 lines) that captures its essence, mood, and key visual elements. Focus on imagery and metaphor to create a vivid and engaging poem.
+  Dada a imagem a seguir, escreva um poema curto (aproximadamente 4-8 linhas) que capture sua essência, humor e elementos visuais chave. Foque em imagens e metáforas para criar um poema vívido e envolvente.
 
-  Image: {{media url=photoDataUri}}
+  O poema DEVE ser em Português do Brasil.
+
+  Imagem: {{media url=photoDataUri}}
   `,
 });
 
