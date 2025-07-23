@@ -4,7 +4,7 @@
 
 VersoVisão é uma aplicação web que utiliza IA generativa para analisar suas imagens e criar poemas únicos em Português do Brasil, capturando a essência e a emoção de cada momento.
 
-![VersoVisão Screenshot]((https://prnt.sc/bAvI8_NTH_9G))
+![VersoVisão Screenshot](https://prnt.sc/bAvI8_NTH_9G)
 *<p align="center">Interface principal do aplicativo.</p>*
 
 ---
