@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useCallback, ChangeEvent } from "react";
-import Image from "next/image";
+import NextImage from "next/image";
 import {
   Feather,
   Upload,
@@ -241,7 +241,7 @@ export default function Home() {
                 </div>
               ) : (
                 <div className="relative aspect-square w-full">
-                  <Image
+                  <NextImage
                     src={imageUrl}
                     alt="Envio do usuário"
                     fill
