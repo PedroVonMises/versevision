@@ -34,7 +34,7 @@ async function createCombinedImage(
   bgColor: string
 ): Promise<Blob | null> {
   return new Promise((resolve) => {
-    const image = new Image();
+    const image = new window.Image();
     image.crossOrigin = "anonymous";
     image.onload = () => {
       const canvas = document.createElement("canvas");
@@ -176,8 +176,8 @@ export default function Home() {
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
       } else if (action === "share") {
-        if (navigator.share && navigator.canShare({ files: [new File([blob], 'verso-visao.png', { type: 'image/png' })] })) {
-          const file = new File([blob], "verso-visao.png", { type: "image/png" });
+        const file = new File([blob], "verso-visao.png", { type: "image/png" });
+        if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
           await navigator.share({
             title: "Criação VersoVisão",
             text: `Um poema inspirado na minha foto:\n\n${poem}`,
@@ -187,12 +187,17 @@ export default function Home() {
           toast({
             variant: "destructive",
             title: "Compartilhamento não suportado",
-            description: "Seu navegador não suporta o compartilhamento de arquivos.",
+            description: "Seu navegador não suporta o compartilhamento de arquivos. Para compartilhar, use uma conexão segura (HTTPS).",
           });
         }
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error(`${action} falhou:`, error);
+      const isAbortError = error.name === 'AbortError';
+      if (isAbortError) {
+        // User cancelled the share, do not show an error
+        return;
+      }
       toast({
         variant: "destructive",
         title: "Erro",
